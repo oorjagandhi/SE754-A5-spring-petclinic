@@ -53,11 +53,13 @@ class VisitController {
 	}
 
 	/**
-	 * Called before each and every @RequestMapping annotated method. 2 goals: - Make sure
-	 * we always have fresh data - Since we do not use the session scope, make sure that
-	 * Pet object always has an id (Even though id is not part of the form fields)
-	 * @param petId
-	 * @return Pet
+	 * Loads the owner and pet for each visit-related request, then attaches a new
+	 * {@link Visit} to the pet. Runs before each {@code @RequestMapping} method to ensure
+	 * fresh data and a valid pet ID (not stored in the session or form fields).
+	 * @param ownerId the ID of the owner who owns the pet
+	 * @param petId the ID of the pet for which the visit is being created
+	 * @param model the model map to which the resolved {@link Owner} and {@link Pet} are added
+	 * @return a new {@link Visit} instance attached to the resolved pet
 	 */
 	@ModelAttribute("visit")
 	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
