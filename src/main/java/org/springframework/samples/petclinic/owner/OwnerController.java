@@ -58,6 +58,12 @@ class OwnerController {
 		this.owners = owners;
 	}
 
+	/**
+	 * Prevents HTTP clients from supplying {@code id} or nested {@code *.id} fields
+	 * via form submissions. Without this, a malicious request could inject arbitrary
+	 * primary key values and overwrite unintended database records.
+	 * @param dataBinder the binder to configure with disallowed fields
+	 */
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id", "*.id");
