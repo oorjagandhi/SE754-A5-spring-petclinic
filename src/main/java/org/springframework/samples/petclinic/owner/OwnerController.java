@@ -167,9 +167,9 @@ class OwnerController {
 	}
 
 	/**
-	 * Custom handler for displaying an owner.
+	 * Displays the details of a single owner.
 	 * @param ownerId the ID of the owner to display
-	 * @return a ModelMap with the model attributes for the view
+	 * @return a ModelAndView with the owner details for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
