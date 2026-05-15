@@ -20,6 +20,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Repository class for <code>Owner</code> domain objects. All method names are compliant
@@ -42,6 +43,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @return a Collection of matching {@link Owner}s (or an empty Collection if none
 	 * found)
 	 */
+	@Transactional(readOnly = true)
 	Page<Owner> findByLastNameStartingWith(String lastName, Pageable pageable);
 
 	/**
@@ -57,6 +59,7 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 	 * @throws IllegalArgumentException if the id is null (assuming null is not a valid
 	 * input for id)
 	 */
+	@Transactional(readOnly = true)
 	Optional<Owner> findById(Integer id);
 
 }
