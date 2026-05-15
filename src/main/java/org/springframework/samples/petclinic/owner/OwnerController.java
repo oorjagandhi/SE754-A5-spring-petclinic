@@ -58,6 +58,12 @@ class OwnerController {
 		this.owners = owners;
 	}
 
+	/**
+	 * Prevents HTTP clients from supplying {@code id} or nested {@code *.id} fields
+	 * via form submissions. Without this, a malicious request could inject arbitrary
+	 * primary key values and overwrite unintended database records.
+	 * @param dataBinder the binder to configure with disallowed fields
+	 */
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id", "*.id");
@@ -96,27 +102,22 @@ class OwnerController {
 	@GetMapping("/owners")
 	public String processFindForm(@RequestParam(defaultValue = "1") int page, Owner owner, BindingResult result,
 			Model model) {
-		// allow parameterless GET request for /owners to return all records
 		String lastName = owner.getLastName();
 		if (lastName == null) {
-			lastName = ""; // empty string signifies broadest possible search
+			lastName = "";
 		}
 
-		// find owners by last name
 		Page<Owner> ownersResults = findPaginatedForOwnersLastName(page, lastName);
 		if (ownersResults.isEmpty()) {
-			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
 			return "owners/findOwners";
 		}
 
 		if (ownersResults.getTotalElements() == 1) {
-			// 1 owner found
 			owner = ownersResults.iterator().next();
 			return "redirect:/owners/" + owner.getId();
 		}
 
-		// multiple owners found
 		return addPaginationModel(page, model, ownersResults);
 	}
 
@@ -161,9 +162,9 @@ class OwnerController {
 	}
 
 	/**
-	 * Custom handler for displaying an owner.
+	 * Displays the details of a single owner.
 	 * @param ownerId the ID of the owner to display
-	 * @return a ModelMap with the model attributes for the view
+	 * @return a ModelAndView with the owner details for the view
 	 */
 	@GetMapping("/owners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
