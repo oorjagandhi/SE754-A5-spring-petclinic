@@ -159,9 +159,9 @@ class PetController {
 	}
 
 	/**
-	 * Updates the details of an existing pet belonging to the given owner. Throws
-	 * {@link IllegalStateException} if {@code pet.getId()} is null or if the pet
-	 * does not exist for the given owner.
+	 * Updates the details of an existing pet belonging to the given owner.
+	 * If the pet is not found in the owner's collection, falls back to adding it.
+	 * Throws {@link IllegalStateException} if {@code pet.getId()} is null.
 	 * @param owner the owner whose pet is being updated
 	 * @param pet the pet carrying the updated name, birth date, and type
 	 */
